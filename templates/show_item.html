@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{ url_for('static',filename='img/favicon.png') }}" type="image/x-icon">
+
+    <title>商品详细信息</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/fonts/Lato/Lato.css') }}">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/fonts/flaticon/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/fonts/webfont/css/materialdesignicons.min.css') }}">
+
+    <!-- Libs -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='libs/bootstrap-4.3.1/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='libs/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='libs/slick/slick.css') }}">
+
+    <!-- Theme -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/style.css') }}">
+    <meta name="theme-color" content="#ECECEC">
+    <style>
+        .procDisplay {
+            width: inherit;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /*为了效果明显，可以将如下边框打开，看一下效果*/
+            /* border:1px solid black; */
+        }
+
+        .procDisplay img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+	<div class="head-line"></div>
+	
+	{% for message in get_flashed_messages(with_categories=True) %}
+	<div class="alert alert-{{ message[0] }}">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<strong>{{ message[1] }}</strong>
+	</div>
+	{% endfor %}
+
+	<header class="page-header">
+		<div class="container">
+			<div class="top-bar row align-items-center">
+				<div class="search col-lg-4">
+					<div class="form-search-toggle js-open-search">
+						<i class="search-icon flaticon-magnifying-glass-browser fi-2x"></i>
+						<span>Search</span>
+					</div>
+					<div id="js-open-mob-menu" class="mob-menu-toggle">
+						<span>Menu</span> <i class="flaticon-menu-options fi-2x"></i>
+					</div>
+				</div>
+
+				<div class="logo col-lg-4">
+					<a href="{{ url_for('user.home') }}"><img src="{{ url_for('static',filename='img/logo.png') }}" alt=""></a>
+				</div>
+				<div class="quick-access-menu col-lg-4">
+
+					<div class="quick-access__item">
+                        <div class="header-mini-cart">
+							<a href="{{ url_for('user.panel') }}"><span class="account"><i
+								class="flaticon-messenger-user-avatar fi-2x"></i></span></a>
+                            <div class="mini-cart">
+                                <div class="mini-cart__content">
+									{% if username %}
+                                    <div class="empty-message">Hello,{{username}}</div>
+                                    <a href="{{ url_for('user.panel') }}" class="btn btn-primary btn-lg mini-cart__btn">个人中心</a>
+									{% else %}
+									<div class="empty-message">Please log in first</div>
+									{% endif %}
+								</div>
+                                <div class="mini-cart__footer">
+                                    <div class="icon-box icon-box-left justify-content-center">
+                                        <div class="icon-box__icon"><i class="flaticon flaticon-delivery-truck"></i></div>
+                                        <div class="icon-box__title">Buybuy</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+				</div><!-- end of quick-access-menu -->
+			</div> <!-- end of top-bar -->
+
+			<nav class="header-navigation">
+				<button class="mob-menu-close" id="js-close-mob-menu">
+					<span>Close</span>
+					<i class="flaticon-cancel-button"></i>
+				</button>
+                <br>
+				<ul class="nav justify-content-center">
+					<li class="nav-item">
+						<a class="nav-link active" href="{{ url_for('user.home') }}">主页</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ url_for('user.panel') }}">个人中心</a>
+					</li>
+					<li class="nav-item">
+						<a onclick="return confirm('确认注销？');" class="nav-link"
+							href="{{ url_for('user.logout') }}">注销</a>
+					</li>
+
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<div class="page-wrap single shop">
+		<!-- Breadcrumbs -->
+
+		<div class="page-content">
+			<main class="main-content">
+				<section class="section-single-product product">
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-5">
+								<div class="product-thumb">
+									
+									<div class="product-gallery">
+										
+                                            <div class="procDisplay">
+                                                
+                                            <img src="{{ url_for('static',filename=item.img) }}" alt="" >
+                                        </div>
+                                        
+									</div>
+								</div>
+							</div>
+
+							<div class="product-summary summary col-lg-7">
+                                <br>
+                                <h4 class="mb-30">商品名称：{{item.name}}</h4>
+								
+
+								<div class="price">
+                                    <h4 class="mb-30">商品价格：{{item.price}}</h4>
+									
+									
+								</div>
+
+                                <div class="product-attributes">
+									<div class="product-attributes__item">
+										<h4 class="mb-30">上传者名字：{{item.uploader_name}}</h4>
+										
+									</div>
+                                </div>
+								<div class="description-block">
+									<h4 class="mb-30">商品描述：</h4>
+
+									<div class="product-description text-content">
+										<p>  {{item.desc}}
+										</p>
+									</div>
+								</div>
+								{% if item.identity_ok == 1 %}
+								{% if isCollect==0 %}
+                                <a href="{{ url_for('store.add_my_collect',item_id=item.id) }}" onclick="return confirm('确认收藏？');" class="btn btn-primary mr-1 mb-3">添加收藏</a>
+								{% else %}
+								<a href="" onclick="alert('已收藏');" class="btn btn-primary mr-1 mb-3">已收藏</a>
+								{% endif %}
+								{% if user_id!=seller_id %}
+								<a href="{{ url_for('chat.chat',user_id=user_id,chat_partner_id=seller_id,product_id=product_id) }}" class="btn btn-primary mr-1 mb-3">给卖家留言</a>
+								{% endif %}
+								{% endif %}
+								{%  if key_word=='0'  %}
+                                <a href="{{ url_for('user.home') }}" class="btn btn-primary mr-1 mb-3">返回主页</a>
+                                {% else %}
+                                <a href="{{ url_for('store.my_prod') }}" class="btn btn-primary mr-1 mb-3">返回我的商品</a>
+                                {% endif %}
+                                
+							</div>
+						</div>
+					</div>
+				</section>
+
+            </main>
+		</div>
+	</div>
+
+	<footer class="page-footer">
+		<div class="container">
+
+
+			<div class="footer-bottom">
+				<div class="copyright">Copyright &copy; 2020.Adventure of Bug Coders All rights reserved.<a
+						target="_blank" href=""></a></div>
+				<ul class="footer-bottom__menu">
+					<li>Privacy Policy</li>
+					<li>Terms of use</li>
+				</ul>
+			</div>
+		</div>
+	</footer>
+
+	<div class="full-search-wrap">
+		<div class="full-search container">
+			<div class="close-s float-right js-close-search flaticon-cancel-button fi-2x"></div>
+			<form action="/getsearch" class=" search-full-form" method=post>
+				<div class="position-relative">
+					<i class="search-icon flaticon-magnifying-glass-browser fi-2x"></i>
+					<input type="text" id="s-full" class="search-full-form__input" placeholder="Search" name="keyword" maxlength="80">
+					<input type="submit" class="d-none">
+				</div>
+				<p class="hint">Type in your search and press enter</p>
+			</form>
+		</div>
+	</div>
+
+    <div id="js-back-to-top" class="back-to-top"><i class="flaticon-up-arrow-sign"></i> Page top</div>
+
+    <!-- Libs -->
+    <script src="{{ url_for('static',filename='libs/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='libs/bootstrap-4.3.1/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='libs/select2/js/select2.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='libs/slick/slick.min.js') }}"></script>
+
+    <!-- Theme -->
+    <script src="{{ url_for('static',filename='assets/js/custom.js') }}"></script>
+
+</body>
+
+</html>

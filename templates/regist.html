@@ -1,0 +1,305 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{ url_for('static',filename='img/favicon.png') }}" type="image/x-icon">
+
+    <title>注册</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/fonts/Lato/Lato.css') }}">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/fonts/flaticon/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/fonts/webfont/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='fonts/font-awesome/css/font-awesome.min.css') }}">
+
+    <!-- Libs -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='libs/bootstrap-4.3.1/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='libs/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='libs/slick/slick.css') }}">
+
+    <!-- Theme -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/style.css') }}">
+    <meta name="theme-color" content="#ECECEC">
+    <style>
+        .procDisplay {
+            width: inherit;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /*为了效果明显，可以将如下边框打开，看一下效果*/
+            /* border:1px solid black; */
+        }
+
+        .procDisplay img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        a{
+          text-decoration: none;
+        }
+        a:hover{
+          text-decoration: none;
+        }
+
+        .form-container{
+            margin-left:auto;  
+            margin-right:auto; 
+            margin-top:100PX; 
+            width:20em;  
+        }
+        .form-horizontal{
+            background: #fff;
+            padding-bottom: 40px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .form-horizontal .heading{
+            display: block;
+            font-size: 35px;
+            font-weight: 700;
+            padding: 35px 0;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 30px;
+        }
+        .form-horizontal .form-group{
+            padding: 0 40px;
+            margin: 0 0 25px 0;
+            position: relative;
+        }
+        .form-horizontal .form-control{
+            background: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            box-shadow: none;
+            padding: 0 20px 0 45px;
+            height: 40px;
+            transition: all 0.3s ease 0s;
+        }
+        .form-horizontal .form-control:focus{
+            background: #e0e0e0;
+            box-shadow: none;
+            outline: 0 none;
+        }
+        .form-horizontal .form-group i{
+            position: absolute;
+            top: 12px;
+            left: 60px;
+            font-size: 17px;
+            color: #c8c8c8;
+            transition : all 0.5s ease 0s;
+        }
+        .form-horizontal .form-control:focus + i{
+            color: #00b4ef;
+        }
+        .form-horizontal .fa-question-circle{
+            display: inline-block;
+            position: absolute;
+            top: 12px;
+            right: 60px;
+            font-size: 20px;
+            color: #808080;
+            transition: all 0.5s ease 0s;
+        }
+        .form-horizontal .fa-question-circle:hover{
+            color: #000;
+        }
+        
+        .form-horizontal .text{
+            float: left;
+            margin-left: 7px;
+            line-height: 20px;
+            padding-top: 5px;
+            text-transform: capitalize;
+        }
+        .form-horizontal .btn{
+            width: 260px;
+            float: left;
+            font-size: 14px;
+            color: #fff;
+            background: #00b4ef;
+            border-radius: 30px;
+            padding: 10px 25px;
+            border:  none;
+            text-transform: capitalize;
+            transition: all 0.5s ease 0s;
+        }
+        @media only screen and (max-width: 479px){
+            .form-horizontal .form-group{
+                padding: 0 25px;
+            }
+            .form-horizontal .form-group i{
+                left: 45px;
+            }
+            .form-horizontal .btn{
+                padding: 10px 20px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+	<div class="head-line"></div>
+	
+	{% for message in get_flashed_messages(with_categories=True) %}
+	<div class="alert alert-{{ message[0] }}">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<strong>{{ message[1] }}</strong>
+	</div>
+	{% endfor %}
+
+	<header class="page-header">
+		<div class="container">
+			<div class="top-bar row align-items-center">
+				<div class="search col-lg-4">
+					<div class="form-search-toggle js-open-search">
+						<i class="search-icon flaticon-magnifying-glass-browser fi-2x"></i>
+						<span>Search</span>
+					</div>
+					<div id="js-open-mob-menu" class="mob-menu-toggle">
+						<span>Menu</span> <i class="flaticon-menu-options fi-2x"></i>
+					</div>
+				</div>
+
+				<div class="logo col-lg-4">
+					<a href="{{ url_for('user.home') }}"><img src="{{ url_for('static',filename='img/logo.png') }}" alt=""></a>
+				</div>
+				<div class="quick-access-menu col-lg-4">
+
+					<div class="quick-access__item">
+                        <div class="header-mini-cart">
+							<a href="{{ url_for('user.panel') }}"><span class="account"><i
+								class="flaticon-messenger-user-avatar fi-2x"></i></span></a>
+                            <div class="mini-cart">
+                                <div class="mini-cart__content">
+									{% if username %}
+                                    <div class="empty-message">Hello,{{username}}</div>
+                                    <a href="{{ url_for('user.panel') }}" class="btn btn-primary btn-lg mini-cart__btn">个人中心</a>
+									{% else %}
+									<div class="empty-message">Please log in first</div>
+									{% endif %}
+								</div>
+                                <div class="mini-cart__footer">
+                                    <div class="icon-box icon-box-left justify-content-center">
+                                        <div class="icon-box__icon"><i class="flaticon flaticon-delivery-truck"></i></div>
+                                        <div class="icon-box__title">Buybuy</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+				</div><!-- end of quick-access-menu -->
+			</div> <!-- end of top-bar -->
+
+			<nav class="header-navigation">
+				<button class="mob-menu-close" id="js-close-mob-menu">
+					<span>Close</span>
+					<i class="flaticon-cancel-button"></i>
+				</button>
+                <br>
+				<ul class="nav justify-content-center">
+					<li class="nav-item">
+						<a class="nav-link active" href="{{ url_for('user.home') }}">主页</a>
+                    </li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ url_for('user.login') }}">登录</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<div class="page-wrap single shop">
+		<!-- Breadcrumbs -->
+
+		<div class="page-content">
+			<main class="main-content">
+				<!--下面是用户名输入框-->
+                <div class="container">
+                    <div class="row">
+                        
+                      <div class="form-container">
+                            
+                        <form class="form-horizontal" method="post" action='/regist'>
+                                
+                          <div class="form-group">
+                            <input class="form-control" type="text" placeholder="用户名限制在1-30字符内" name="username">
+                            <i class="fa fa-user"></i>
+                          </div>
+                          <div class="form-group">
+                            <input class="form-control" type="password" placeholder="密码限制在6-30字符内" name="password1">
+                            <i class="fa fa-lock"></i>
+                          </div>
+                          <div class="form-group">
+                            <input class="form-control" type="password" placeholder="重复密码" name="password2">
+                            <i class="fa fa-lock"></i>
+                          </div>
+                          <div class="form-group">
+                            <input class="form-control" type="text" placeholder="请输入正确的邮箱格式" name="email">
+                            <i class="fa fa-envelope"></i>
+                          </div>
+                          <div class="form-group">
+                            <button type="submit" class="btn btn-default">注  册</button>
+                          </div>
+                        </form>
+                           
+                      </div>
+                        
+                    </div>
+                </div>
+            </main>
+		</div>
+	</div>
+
+	<footer class="page-footer">
+		<div class="container">
+
+
+			<div class="footer-bottom">
+				<div class="copyright">Copyright &copy; 2020.Adventure of Bug Coders All rights reserved.<a
+						target="_blank" href=""></a></div>
+				<ul class="footer-bottom__menu">
+					<li>Privacy Policy</li>
+					<li>Terms of use</li>
+				</ul>
+			</div>
+		</div>
+	</footer>
+
+	<div class="full-search-wrap">
+		<div class="full-search container">
+			<div class="close-s float-right js-close-search flaticon-cancel-button fi-2x"></div>
+			<form action="/getsearch" class=" search-full-form" method=post>
+				<div class="position-relative">
+					<i class="search-icon flaticon-magnifying-glass-browser fi-2x"></i>
+					<input type="text" id="s-full" class="search-full-form__input" placeholder="Search" name="keyword" maxlength="80">
+					<input type="submit" class="d-none">
+				</div>
+				<p class="hint">Type in your search and press enter</p>
+			</form>
+		</div>
+	</div>
+
+    <div id="js-back-to-top" class="back-to-top"><i class="flaticon-up-arrow-sign"></i> Page top</div>
+
+    <!-- Libs -->
+    <script src="{{ url_for('static',filename='libs/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='libs/bootstrap-4.3.1/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='libs/select2/js/select2.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='libs/slick/slick.min.js') }}"></script>
+
+    <!-- Theme -->
+    <script src="{{ url_for('static',filename='assets/js/custom.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+__pycache__
+data.sqlite
+.vs
+.vscode
+.idea
+venv
+
+static/*/*.jpg
+static/*/*.png
+static/*/*.jpeg
+static/*/*.gif
+static/*/*.bmp
+
+!static/img/*
+!static/head_images/start.jpg
